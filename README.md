@@ -11,6 +11,8 @@
 #进入项目目录
 cd Ranking-of-Internet-Corp-By-Go
 
+go mod tidy
+
 go run main.go
 ```
 

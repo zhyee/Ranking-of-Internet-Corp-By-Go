@@ -24,8 +24,6 @@ func main() {
 	for _, corpName := range config.Cfg.Companies {
 		go func(corpName string) {
 
-			fmt.Println(corpName)
-
 			if symbol, err := crawler.SearchStockSymbol(corpName); err != nil {
 				log.Printf("查找公司 %s 的股票代码失败，请确认名称是否正确:%s\n", corpName, err.Error())
 			} else {
@@ -45,9 +43,12 @@ func main() {
 				if err != nil {
 					log.Printf("查询公司 %s 市值失败： %s\n", symbol.CorpName, err.Error())
 				} else {
-					fmt.Println(symbol.CorpName, mcap.USD, mcap.RMB, mcap.HKD)
-
-					fmt.Println()
+					fmt.Printf("%s\t\t\t%.2f亿美元\t\t%.2f亿元\t\t%.2f亿港元\n",
+						symbol.CorpName,
+						float64(mcap.USD) / 1e8,
+						float64(mcap.RMB) / 1e8,
+						float64(mcap.HKD) / 1e8,
+					)
 				}
 				wg2.Done()
 			}(symbol)
