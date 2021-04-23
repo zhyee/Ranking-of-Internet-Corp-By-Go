@@ -1,6 +1,9 @@
 package entity
 
-import "sync"
+import (
+	"Ranking-of-Internet-Corp-By-Go/util/sort"
+	"sync"
+)
 
 type QuotationCode struct {
 	QuotationCodeTable struct {
@@ -34,7 +37,23 @@ type MarketCapApiResp struct {
 }
 
 type MarketCap struct {
+	Cooperation string
 	USD,
 	HKD,
 	RMB int64
+}
+
+func (mc *MarketCap) GetValue() int64 {
+	return mc.USD
+}
+
+func (mc *MarketCap) Compare(another sort.Comparable) int {
+
+	if mc.GetValue() > another.GetValue() {
+		return -1
+	} else if mc.GetValue() == another.GetValue() {
+		return 0
+	}
+
+	return 1
 }

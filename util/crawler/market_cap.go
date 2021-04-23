@@ -88,12 +88,12 @@ func GetMarketCap(sharesCode *entity.StockSymbol) (*entity.MarketCap, error) {
 		return nil, err
 	}
 
-	marketVal, err := parseValue(apiResp)
+	marketCap, err := parseValue(apiResp)
 	if err != nil {
 		return nil, err
 	}
 
-	return marketVal, nil
+	return marketCap, nil
 }
 
 func getCurrencyType(unit string) CurrencyType {
@@ -121,6 +121,7 @@ func parseValue(apiResp entity.MarketCapApiResp) (*entity.MarketCap, error) {
 	}
 
 	return &entity.MarketCap{
+		Cooperation:apiResp.Data.Name,
 		USD:int64(amountUSD),
 		HKD:int64(amountHKD),
 		RMB:int64(amountRMB),

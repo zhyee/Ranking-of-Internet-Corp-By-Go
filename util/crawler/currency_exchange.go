@@ -53,9 +53,12 @@ func getExchangeRate(from, to CurrencyType) (float64, error) {
 	}
 
 	key := fmt.Sprintf("%d->%d", from, to)
+	exchangeRateCache.Lock.Lock()
 	if rate, ok := exchangeRateCache.Rates[key]; ok {
+		exchangeRateCache.Lock.Unlock()
 		return rate, nil
 	}
+	exchangeRateCache.Lock.Unlock()
 
 	if err := config.ParseCfgFile(); err != nil {
 		log.Println("配置文件解析出错：")
