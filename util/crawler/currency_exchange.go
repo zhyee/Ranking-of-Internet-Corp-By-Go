@@ -72,7 +72,14 @@ func getExchangeRate(from, to CurrencyType) (float64, error) {
 		CurrencyNames[to],
 	)
 
-	resp, err := http.Get(url)
+	var resp *http.Response
+	var err error
+	for i := 0; i < 3; i++ {
+		resp, err = http.Get(url)
+		if err == nil && resp != nil {
+			break
+		}
+	}
 	if err != nil {
 		return 0, err
 	}

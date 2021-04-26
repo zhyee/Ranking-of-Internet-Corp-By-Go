@@ -30,8 +30,14 @@ func SearchStockSymbol(corpName string) (*entity.StockSymbol, error) {
 
 	url := fmt.Sprintf(config.Cfg.ApiUrl.MarketCode, corpName, time.Now().UnixNano() / 1e6)
 
-	resp, err := http.Get(url)
-
+	var resp *http.Response
+	var err error
+	for i := 0; i < 3; i++ {
+		resp, err = http.Get(url)
+		if err == nil && resp != nil {
+			break
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +75,14 @@ func GetMarketCap(symbol *entity.StockSymbol) (*entity.MarketCap, error) {
 
 	url := fmt.Sprintf(config.Cfg.ApiUrl.MarketValue, symbol.Symbol)
 
-	resp, err := http.Get(url)
+	var resp *http.Response
+	var err error
+	for i := 0; i < 3; i++ {
+		resp, err = http.Get(url)
+		if err == nil && resp != nil {
+			break
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
