@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"strings"
 	"time"
 )
@@ -30,14 +29,7 @@ func SearchStockSymbol(corpName string) (*entity.StockSymbol, error) {
 
 	url := fmt.Sprintf(config.Cfg.ApiUrl.MarketCode, corpName, time.Now().UnixNano() / 1e6)
 
-	var resp *http.Response
-	var err error
-	for i := 0; i < 3; i++ {
-		resp, err = http.Get(url)
-		if err == nil && resp != nil {
-			break
-		}
-	}
+	resp, err := http_util.GetWithRetry(url, 3)
 	if err != nil {
 		return nil, err
 	}
@@ -75,14 +67,7 @@ func GetMarketCap(symbol *entity.StockSymbol) (*entity.MarketCap, error) {
 
 	url := fmt.Sprintf(config.Cfg.ApiUrl.MarketValue, symbol.Symbol)
 
-	var resp *http.Response
-	var err error
-	for i := 0; i < 3; i++ {
-		resp, err = http.Get(url)
-		if err == nil && resp != nil {
-			break
-		}
-	}
+	resp, err := http_util.GetWithRetry(url, 3)
 	if err != nil {
 		return nil, err
 	}
