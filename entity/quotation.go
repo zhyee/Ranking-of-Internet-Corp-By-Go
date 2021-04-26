@@ -1,7 +1,6 @@
 package entity
 
 import (
-	"Ranking-of-Internet-Corp-By-Go/util/sort"
 	"sync"
 )
 
@@ -47,7 +46,7 @@ func (mc *MarketCap) GetValue() int64 {
 	return mc.USD
 }
 
-func (mc *MarketCap) Compare(another sort.Comparable) int {
+func (mc *MarketCap) Compare(another Comparable) int {
 
 	if mc.GetValue() > another.GetValue() {
 		return -1

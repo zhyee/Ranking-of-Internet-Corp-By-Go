@@ -59,7 +59,7 @@ func main() {
 
 	finish := make(chan bool)
 	go func() {
-		arr := make([]sort.Comparable, 0, len(config.Cfg.Companies))
+		arr := make([]entity.Comparable, 0, len(config.Cfg.Companies))
 
 		for mc := range marketCapChan {
 			arr = sort.Insert(arr, mc)

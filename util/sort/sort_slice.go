@@ -1,14 +1,8 @@
 package sort
 
-type Comparable interface {
-	GetValue() int64
-	// 和另一个对象比较，返回值<0 表明当前对象小于another
-	// 返回值=0，当前对象等于another
-	// 返回值>0，当前对象大于another
-	Compare(another Comparable) int
-}
+import "Ranking-of-Internet-Corp-By-Go/entity"
 
-func FindInsertIndex(array []Comparable, startIdx, endIdx int, target Comparable) int {
+func FindInsertIndex(array []entity.Comparable, startIdx, endIdx int, target entity.Comparable) int {
 
 	if startIdx > endIdx {
 		return 0
@@ -32,10 +26,10 @@ func FindInsertIndex(array []Comparable, startIdx, endIdx int, target Comparable
 
 }
 
-func Insert(array []Comparable, target Comparable) []Comparable {
+func Insert(array []entity.Comparable, target entity.Comparable) []entity.Comparable {
 
 	if array == nil {
-		array = make([]Comparable, 0)
+		array = make([]entity.Comparable, 0)
 	}
 
 	idx := FindInsertIndex(array, 0, len(array) - 1, target)
