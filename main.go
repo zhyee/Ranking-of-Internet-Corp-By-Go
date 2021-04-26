@@ -4,15 +4,17 @@ import (
 	"Ranking-of-Internet-Corp-By-Go/entity"
 	"Ranking-of-Internet-Corp-By-Go/util/config"
 	"Ranking-of-Internet-Corp-By-Go/util/crawler"
-	"Ranking-of-Internet-Corp-By-Go/util/http_util"
 	"Ranking-of-Internet-Corp-By-Go/util/sort"
 	"fmt"
 	"log"
-	"strings"
+	"net/http"
 	"sync"
+	"time"
 )
 
 func main() {
+	// 设置http请求的超时时间
+	http.DefaultClient.Timeout = time.Second * 5
 
 	if err := config.ParseCfgFile(); err != nil {
 		panic(err)
@@ -66,19 +68,19 @@ func main() {
 		for i,mcap := range arr{
 
 			if mc, ok := mcap.(*entity.MarketCap); ok {
-				name := fmt.Sprintf("%2d.%s", i+1, mc.Cooperation)
+				name := fmt.Sprintf("%2d. %s", i+1, mc.Cooperation)
 				usd := fmt.Sprintf("%.2f亿美元", float64(mc.USD) / 1e8)
 				rmb := fmt.Sprintf("%.2f亿元", float64(mc.RMB) / 1e8)
 				hkd := fmt.Sprintf("%.2f亿港元", float64(mc.HKD) / 1e8)
-				fmt.Printf("%s%s%s%s%s%s%s%s\n",
+
+				fmt.Printf("%s%s%s%s%s%s%s\n",
 					name,
-					strings.Repeat("\t", 5 - http_util.CalcTabNum(name)),
+					"\t\t",
 					usd,
-					strings.Repeat("\t", 5 - http_util.CalcTabNum(usd)),
+					"\t\t",
 					rmb,
-					strings.Repeat("\t", 5 - http_util.CalcTabNum(rmb)),
+					"\t\t",
 					hkd,
-					strings.Repeat("\t", 5 - http_util.CalcTabNum(hkd)),
 				)
 			}
 		}

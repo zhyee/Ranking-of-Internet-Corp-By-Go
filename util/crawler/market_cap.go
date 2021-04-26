@@ -35,6 +35,7 @@ func SearchStockSymbol(corpName string) (*entity.StockSymbol, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -53,25 +54,26 @@ func SearchStockSymbol(corpName string) (*entity.StockSymbol, error) {
 
 	for _, val := range code.QuotationCodeTable.Data {
 		if _, ok := MarketNames[val.SecurityTypeName]; ok {
-			return &entity.StockSymbol{CorpName: val.Name, Symbol:entity.TickerSymbol(val.QuoteID)}, nil
+			return &entity.StockSymbol{CorpName: corpName, Symbol:entity.TickerSymbol(val.QuoteID)}, nil
 		}
 	}
 
 	return nil, fmt.Errorf("quotation code for %s not found", corpName)
 }
 
-func GetMarketCap(sharesCode *entity.StockSymbol) (*entity.MarketCap, error) {
+func GetMarketCap(symbol *entity.StockSymbol) (*entity.MarketCap, error) {
 
 	if err := config.ParseCfgFile(); err != nil {
 		return nil, err
 	}
 
-	url := fmt.Sprintf(config.Cfg.ApiUrl.MarketValue, sharesCode.Symbol)
+	url := fmt.Sprintf(config.Cfg.ApiUrl.MarketValue, symbol.Symbol)
 
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -92,6 +94,7 @@ func GetMarketCap(sharesCode *entity.StockSymbol) (*entity.MarketCap, error) {
 	if err != nil {
 		return nil, err
 	}
+	marketCap.Cooperation = symbol.CorpName
 
 	return marketCap, nil
 }

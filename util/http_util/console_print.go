@@ -8,9 +8,9 @@ func CalcUtf8TextWidth(text string) int {
 		// 一个中文字符显示宽度约等于7/4个英文字符，一个英文字符当作3的宽度，则一个中文字符
 		// 的宽度即为5，最终返回的值/3即为英文字符数
 		if unicodeArr[i] > 127 {
-			num += 7
+			num += 5
 		} else {
-			num += 4
+			num += 3
 		}
 	}
 	return num
@@ -22,6 +22,6 @@ func CalcUtf8TextWidth(text string) int {
 func CalcTabNum(text string) int {
 	num := CalcUtf8TextWidth(text)
 	// 4个英文字符占据一个tab
-	return  num / 16
+	return  num / 12
 }
 

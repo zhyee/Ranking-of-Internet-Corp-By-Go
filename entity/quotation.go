@@ -17,8 +17,8 @@ type QuotationCode struct {
 	}
 }
 type ExchangeRateCache struct {
-	Rates map[string]float64
-	Lock sync.Locker
+	Rates  map[string]float64
+	Locker *sync.RWMutex
 }
 
 type TickerSymbol string

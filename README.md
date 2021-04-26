@@ -1,18 +1,17 @@
 ## 实时抓取中国上市互联网公司市值和其排名（golang版）
 
-#### 安装
-```bash
-  git clone https://github.com/zhyee/Ranking-of-Internet-Corp-By-Go.git
-```
-
 #### 使用
-
 ```bash
+#clone代码
+git clone https://github.com/zhyee/Ranking-of-Internet-Corp-By-Go.git
+
 #进入项目目录
 cd Ranking-of-Internet-Corp-By-Go
 
+#安装依赖
 go mod tidy
 
+#运行
 go run main.go
 ```
 

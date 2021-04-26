@@ -43,8 +43,8 @@ var CurrencyNameTypeMap = map[string]CurrencyType {
 }
 
 var exchangeRateCache = &entity.ExchangeRateCache{
-	Rates: make(map[string]float64),
-	Lock: &sync.Mutex{},
+	Rates:  make(map[string]float64),
+	Locker: &sync.RWMutex{},
 }
 
 func getExchangeRate(from, to CurrencyType) (float64, error) {
@@ -53,12 +53,12 @@ func getExchangeRate(from, to CurrencyType) (float64, error) {
 	}
 
 	key := fmt.Sprintf("%d->%d", from, to)
-	exchangeRateCache.Lock.Lock()
+	exchangeRateCache.Locker.RLock()
 	if rate, ok := exchangeRateCache.Rates[key]; ok {
-		exchangeRateCache.Lock.Unlock()
+		exchangeRateCache.Locker.RUnlock()
 		return rate, nil
 	}
-	exchangeRateCache.Lock.Unlock()
+	exchangeRateCache.Locker.RUnlock()
 
 	if err := config.ParseCfgFile(); err != nil {
 		log.Println("配置文件解析出错：")
@@ -73,10 +73,10 @@ func getExchangeRate(from, to CurrencyType) (float64, error) {
 	)
 
 	resp, err := http.Get(url)
-	defer resp.Body.Close()
 	if err != nil {
 		return 0, err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -109,9 +109,9 @@ func getExchangeRate(from, to CurrencyType) (float64, error) {
 	if err != nil {
 		return 0, err
 	}
-	exchangeRateCache.Lock.Lock()
+	exchangeRateCache.Locker.Lock()
 	exchangeRateCache.Rates[key] = rate
-	exchangeRateCache.Lock.Unlock()
+	exchangeRateCache.Locker.Unlock()
 	return rate, nil
 }
 
