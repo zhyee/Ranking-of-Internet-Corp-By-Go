@@ -4,6 +4,7 @@ import (
 	"Ranking-of-Internet-Corp-By-Go/entity"
 	"Ranking-of-Internet-Corp-By-Go/util/config"
 	"Ranking-of-Internet-Corp-By-Go/util/crawler"
+	"Ranking-of-Internet-Corp-By-Go/util/http_util"
 	"Ranking-of-Internet-Corp-By-Go/util/sort"
 	"fmt"
 	"log"
@@ -65,13 +66,19 @@ func main() {
 		for i,mcap := range arr{
 
 			if mc, ok := mcap.(*entity.MarketCap); ok {
-				fmt.Printf("%2d. %s%s%.2f亿美元\t\t\t%.2f亿元\t\t\t%.2f亿港元\n",
-					i+1,
-					mc.Cooperation,
-					strings.Repeat("\t", (32 - len([]rune(mc.Cooperation)) * 4)/ 8),
-					float64(mc.USD) / 1e8,
-					float64(mc.RMB) / 1e8,
-					float64(mc.HKD) / 1e8,
+				name := fmt.Sprintf("%2d.%s", i+1, mc.Cooperation)
+				usd := fmt.Sprintf("%.2f亿美元", float64(mc.USD) / 1e8)
+				rmb := fmt.Sprintf("%.2f亿元", float64(mc.RMB) / 1e8)
+				hkd := fmt.Sprintf("%.2f亿港元", float64(mc.HKD) / 1e8)
+				fmt.Printf("%s%s%s%s%s%s%s%s\n",
+					name,
+					strings.Repeat("\t", 5 - http_util.CalcTabNum(name)),
+					usd,
+					strings.Repeat("\t", 5 - http_util.CalcTabNum(usd)),
+					rmb,
+					strings.Repeat("\t", 5 - http_util.CalcTabNum(rmb)),
+					hkd,
+					strings.Repeat("\t", 5 - http_util.CalcTabNum(hkd)),
 				)
 			}
 		}
@@ -85,5 +92,4 @@ func main() {
 	close(marketCapChan)
 
 	<-finish
-
 }
