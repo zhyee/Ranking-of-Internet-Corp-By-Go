@@ -4,6 +4,18 @@ import (
 	"sync"
 )
 
+type NameApiResp struct {
+	Code string `json:"code"`
+	Message string `json:"message"`
+	Data struct{
+		Stock []struct{
+			StockName string `json:"stock_name"`
+			MarketType int `json:"market_type"`
+			Market string `json:"market"`
+		} `json:"stock"`
+	} `json:"data"`
+}
+
 type QuotationCode struct {
 	QuotationCodeTable struct {
 		Data []struct{

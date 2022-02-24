@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"strconv"
 	"strings"
 	"sync"
@@ -21,12 +22,6 @@ const (
 	HKD
 	RMB
 )
-
-var CurrencyUnits  = map[CurrencyType]string{
-	USD:"美元",
-	HKD:"港元",
-	RMB:"元",
-}
 
 var CurrencyNames = map[CurrencyType]string{
 	USD: "usd",
@@ -71,7 +66,10 @@ func getExchangeRate(from, to CurrencyType) (float64, error) {
 		CurrencyNames[to],
 	)
 
-	resp, err := http_util.GetWithRetry(url, 3)
+	header := http.Header{}
+	header.Set("Referer", "https://finance.sina.com.cn/money/forex/hq/CNYHKD.shtml")
+
+	resp, err := http_util.GetWithRetry(url, 3, header)
 	if err != nil {
 		return 0, err
 	}

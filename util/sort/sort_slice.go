@@ -35,15 +35,11 @@ func Insert(array []entity.Comparable, target entity.Comparable) []entity.Compar
 	idx := FindInsertIndex(array, 0, len(array) - 1, target)
 
 	array = append(array, target)
-
-	pos := len(array) - 2
-
-	for pos >= idx {
-		array[pos+1] = array[pos]
-		pos--
+	// 插入的位置不是在slice末尾, 则把插入位置及之后的元素往后挪一位
+	if idx < len(array) - 1 {
+		copy(array[idx+1:], array[idx:])
+		array[idx] = target
 	}
-
-	array[idx] = target
 
 	return array
 }

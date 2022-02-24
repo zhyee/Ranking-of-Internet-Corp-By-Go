@@ -7,9 +7,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"strings"
 	"time"
 )
+
+const QueryNameApi = "https://www.futunn.com/search-stock/predict?keyword=%s&_=%d"
 
 var MarketNames = map[string]int{
 	"美股":1,
@@ -17,6 +20,28 @@ var MarketNames = map[string]int{
 	"深A":3,
 	"沪A":4,
 	"科创板":5,
+}
+
+func QueryEnterpriseLatestName(keyword string) (string, error) {
+	url := fmt.Sprintf(QueryNameApi, keyword, time.Now().UnixNano() / 1e3)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
+	}
+	resp, err := http_util.DefaultHttpClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	names := entity.NameApiResp{}
+	decoder := json.NewDecoder(resp.Body)
+	if err := decoder.Decode(&names); err != nil {
+		return "", err
+	}
+	if len(names.Data.Stock) > 0 {
+		return names.Data.Stock[0].StockName, nil
+	}
+	return "", fmt.Errorf("not found")
 }
 
 /**

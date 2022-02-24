@@ -29,8 +29,15 @@ func main() {
 
 	for _, corpName := range config.Cfg.Companies {
 		go func(corpName string) {
-
-			if symbol, err := crawler.SearchStockSymbol(corpName); err != nil {
+			symbol, err := crawler.SearchStockSymbol(corpName)
+			if err != nil {
+				fmt.Println(err)
+				var name string
+				if name, err = crawler.QueryEnterpriseLatestName(corpName); name != "" && err == nil {
+					symbol, err = crawler.SearchStockSymbol(name)
+				}
+			}
+			if err != nil {
 				log.Printf("查找公司 %s 的股票代码失败，请确认名称是否正确:%s\n", corpName, err.Error())
 			} else {
 				symbolsChan <- symbol
@@ -41,6 +48,7 @@ func main() {
 	}
 
 
+	symbolsChanEmpty := make(chan bool)
 	go func() {
 		for symbol := range symbolsChan {
 			wg2.Add(1)
@@ -54,6 +62,7 @@ func main() {
 				wg2.Done()
 			}(symbol)
 		}
+		close(symbolsChanEmpty)
 	}()
 
 
@@ -90,6 +99,7 @@ func main() {
 
 	wg.Wait()
 	close(symbolsChan)
+	<-symbolsChanEmpty
 	wg2.Wait()
 	close(marketCapChan)
 
