@@ -1,9 +1,9 @@
 package crawler
 
 import (
-	"Ranking-of-Internet-Corp-By-Go/entity"
-	"Ranking-of-Internet-Corp-By-Go/util/config"
-	"Ranking-of-Internet-Corp-By-Go/util/http_util"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/entity"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/util/config"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/util/http_util"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
