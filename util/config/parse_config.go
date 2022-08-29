@@ -1,7 +1,7 @@
 package config
 
 import (
-	"Ranking-of-Internet-Corp-By-Go/entity"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/entity"
 	"github.com/go-yaml/yaml"
 	"io/ioutil"
 )
