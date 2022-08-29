@@ -1,10 +1,10 @@
 package main
 
 import (
-	"Ranking-of-Internet-Corp-By-Go/entity"
-	"Ranking-of-Internet-Corp-By-Go/util/config"
-	"Ranking-of-Internet-Corp-By-Go/util/crawler"
-	"Ranking-of-Internet-Corp-By-Go/util/sort"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/entity"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/util/config"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/util/crawler"
+	"github.com/zhyee/Ranking-of-Internet-Corp-By-Go/util/sort"
 	"fmt"
 	"log"
 	"net/http"
