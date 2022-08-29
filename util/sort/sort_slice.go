@@ -1,6 +1,6 @@
 package sort
 
-import "Ranking-of-Internet-Corp-By-Go/entity"
+import "github.com/zhyee/Ranking-of-Internet-Corp-By-Go/entity"
 
 func FindInsertIndex(array []entity.Comparable, startIdx, endIdx int, target entity.Comparable) int {
 
