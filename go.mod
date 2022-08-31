@@ -1,4 +1,4 @@
-module github.com/zhyee/Ranking-of-Internet-Corp-By-Go/v2
+module github.com/zhyee/Ranking-of-Internet-Corp-By-Go
 
 go 1.15
 
